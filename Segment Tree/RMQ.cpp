@@ -2,7 +2,7 @@
 // SetAr N
 // SetEl log(N)
 // RMQ log(N)
-onst int MAXEL=1<<30;// the maximum possible element in the problem
+const int MAXEL=1<<30;// the maximum possible element in the problem
 struct segment_tree
 {
 	int mi;
