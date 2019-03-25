@@ -24,7 +24,7 @@ struct segment_tree
 			tree[x]=u;
 			return;
 		}
-		if(I<=(l+r)/2)this->setEl(x*2,l,(l+r)>>1,I,u);
+		if(I<=(l+r)>>1)this->setEl(x*2,l,(l+r)>>1,I,u);
 		else this->setEl(x*2+1,(l+r)/2+1,r,I,u);
 		tree[x]=min(tree[x*2],tree[x*2+1]);
 	}
