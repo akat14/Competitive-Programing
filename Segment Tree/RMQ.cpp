@@ -1,60 +1,50 @@
-// Range Minumum Query
-// SetAr N
-// SetEl log(N)
-// RMQ log(N)
-const int MAXEL=1<<30;// the maximum possible element in the problem
+//Range Minimum Query
+//setAr() - N
+//setEl - log(N)
+//RMQ - log(N)
+const int N=;// number of elements
 struct segment_tree
 {
-	int mi;
-	segment_tree *left,*right;
-	segment_tree()
-	{
-		mi=MAXEL;
-	}
-	void setAr(int l,int r,int *u)//set a values for all elements
+	int tree[N*4];
+	void setAr(int x,int l,int r,int *u)// set values to all leaves
 	{
 		if(l==r)
 		{
-			mi=u[l];
+			tree[x]=u[l];
 			return;
 		}
-		if(left==NULL)
-		{
-			left=new segment_tree;
-			right=new segment_tree;
-		}
-		(*left).setAr(l,(l+r)>>1,u);
-		(*right).setAr((l+r)/2+1,r,u);
-		mi=min(left->mi,right->mi);
+		this->setAr(x*2,l,(l+r)>>1,u);
+		this->setAr(x*2+1,(l+r)/2+1,r,u);
+		tree[x]=min(tree[x*2],tree[x*2+1]);
 	}
-	void setEl(int l,int r,int I,int u) //set the value of the element I
+	void setEl(int x,int l,int r,int I,int u)// UNTESTED set a value to a leaf
 	{
 		if(l==r)
 		{
-			mi=u;
+			tree[x]=u;
 			return;
 		}
-		if(left==NULL)
-		{
-			left=new segment_tree;
-			right=new segment_tree;
-		}
-		if(I<=(l+r)>>1)(*left).setEl(l,(l+r)>>1,I,u);
-		else (*right).setEl((l+r)/2+1,r,I,u);
-		mi=min(left->mi,right->mi);
+		if(I<=(l+r)/2)this->setEl(x*2,l,(l+r)>>1,I,u);
+		else this->setEl(x*2+1,(l+r)/2+1,r,I,u);
+		tree[x]=min(tree[x*2],tree[x*2+1]);
 	}
-	int RMQ(int l,int r,int L,int R)
+	int RMQ(int x,int l,int r,int L,int R)// find the smalles element in the interval [l,r]
 	{
-		if(L<=l && r<=R)return mi;
-		if(left==NULL)
+		if(L<=l && r<=R)return tree[x];
+		int f=0,ansl,ansr;
+		if(L<=(l+r)>>1)
 		{
-			left=new segment_tree;
-			right=new segment_tree;
+			ansl=this->RMQ(x*2,l,(l+r)>>1,L,R);
+			f|=1;
 		}
-		int ans=MAXEL;
-		if(L<=(l+r)>>1)ans=min(ans,(*left).RMQ(l,(l+r)>>1,L,R));
-		if(ans==mi)return ans;
-		if((l+r)>>1<R)ans=min(ans,(*right).RMQ((l+r)/2+1,r,L,R));
-		return ans;
+		if(ansl<=tree[x*2+1] && f==1)return ansl;
+		if((l+r)>>1<R)
+		{
+			ansr=this->RMQ(x*2+1,(l+r)/2+1,r,L,R);
+			f|=2;
+		}
+		if(f==1)return ansl;
+		if(f==2)return ansr;
+		return min(ansl,ansr);
 	}
 };
