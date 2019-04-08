@@ -6,7 +6,7 @@ const int N=;// number of elements
 struct segment_tree
 {
 	int tree[N*4];
-	void setAr(int x,int l,int r,int *u)// set values to all leaves
+	void setAr(int x,int l,int r,int *u)//set values to all leaves
 	{
 		if(l==r)
 		{
@@ -17,7 +17,7 @@ struct segment_tree
 		this->setAr(x*2+1,(l+r)/2+1,r,u);
 		tree[x]=min(tree[x*2],tree[x*2+1]);
 	}
-	void setEl(int x,int l,int r,int I,int u)// UNTESTED set a value to a leaf
+	void setEl(int x,int l,int r,int I,int u)//UNTESTED set a value to a leaf
 	{
 		if(l==r)
 		{
@@ -28,7 +28,7 @@ struct segment_tree
 		else this->setEl(x*2+1,(l+r)/2+1,r,I,u);
 		tree[x]=min(tree[x*2],tree[x*2+1]);
 	}
-	int RMQ(int x,int l,int r,int L,int R)// find the smalles element in the interval [l,r]
+	int RMQ(int x,int l,int r,int L,int R)//find the smalles element in the interval [l,r]
 	{
 		if(L<=l && r<=R)return tree[x];
 		int f=0,ansl,ansr;
