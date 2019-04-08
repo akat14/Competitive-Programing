@@ -1,1 +1,12 @@
+spoj TREAP
 spoj ADAAPHID
+spoj ADACROP 
+codeforces 762E
+spoj COUNT1IT 
+spoj IITWPC4D 
+spoj ALLIN1 
+codeforces 847D
+codeforces 863D
+spoj MEANARR 
+spoj TWIST 
+spoj KOILINE 

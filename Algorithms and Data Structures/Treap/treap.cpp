@@ -1,3 +1,13 @@
+//Treap
+//Where N is the Number of nodes in the treap
+//insert - log(N)
+//erase - log(N)
+//split - log(N)
+//split_sz - log(N)
+//merge - log(N)
+//query - log(N)
+//con - 1
+//output N
 struct Treap
 {
 	struct Node
@@ -5,6 +15,7 @@ struct Treap
 		int key;
 		int pr;
 		int sz;
+		int br;
 		Node *l;
 		Node *r;
 		Node(int kkey)
@@ -13,10 +24,11 @@ struct Treap
 			pr=rand();
 			l=r=NULL;
 			sz=1;
+			br=1;
 		}
-		void con()
+		void con()//Keeps everything updated during splits and merges
 		{
-			sz=1;
+			sz=br;
 			if(l)
 			{
 				sz+=l->sz;
@@ -26,7 +38,7 @@ struct Treap
 				sz+=r->sz;
 			}
 		}
-		void output()
+		void output()//Outputs the keys in the treap in ascending order
 		{
 			if(l)l->output();
 			cout<<key<<endl;
@@ -38,7 +50,7 @@ struct Treap
 	{
 		node=NULL;
 	}
-	void split(Node *T,Node *&L,Node *&R,int key)
+	void split(Node *T,Node *&L,Node *&R,int key)//splits T into L and R where all the keys of L are <=key and all the keys of R are >key
 	{
 		if(!T)
 		{
@@ -57,7 +69,7 @@ struct Treap
 		}
 		T->con();
 	}
-	void split_sz(Node *T,Node *&L,Node *&R,int x)
+	void split_sz(Node *T,Node *&L,Node *&R,int x)//splits T into L and R where L contains the first x elemets ot T and R has everything else
 	{
 		if(!T)
 		{
@@ -78,7 +90,7 @@ struct Treap
 		}
 		T->con();
 	}
-	void merge(Node *&T,Node *L,Node *R)
+	void merge(Node *&T,Node *L,Node *R)//merges L and R into T where all keys of L are <= of all keys in R
 	{
 		if(!L)
 		{
@@ -102,27 +114,28 @@ struct Treap
 		}
 		T->con();
 	}
-	void insert(int key)
+	void insert(int key)//inserts an element into the treap
 	{
 		Node *L,*MID,*R;
 		split(node,L,R,key);
 		split(L,L,MID,key-1);
 		if(MID)
 		{
+			MID->br+=1;
 			MID->sz+=1;
 		}
-		else MID=new Node(key,v);
+		else MID=new Node(key);
 		merge(L,L,MID);
 		merge(node,L,R);
 	}
-	void erase(long long x)
+	void erase(int x)//erases all elements = to x from the treap
 	{
 		Node *L,*MID,*R;
 		split(node,L,R,x);
 		split(L,L,MID,x-1);
 		merge(node,L,R);
 	}
-	int query(long long x)
+	int query(int x)//answer the qurty how many numbers <=x are in the trap
 	{
 		Node *L,*R;
 		split(node,L,R,x);
