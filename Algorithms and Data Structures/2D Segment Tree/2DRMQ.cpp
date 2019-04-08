@@ -5,7 +5,7 @@ const int N=;// number of elements
 struct segment_tree
 {
 	int tree[N*4][N*4];
-	void mergeSE(int x,int y,int l,int r,int I)
+	void mergeSE(int x,int y,int l,int r,int I)//updates tree[x]
 	{
 		if(l==r)
 		{
