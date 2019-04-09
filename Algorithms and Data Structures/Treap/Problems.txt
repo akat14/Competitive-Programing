@@ -1,6 +1,6 @@
 spoj TREAP
-spoj ADAAPHID
-spoj ADACROP 
++spoj ADAAPHID
++spoj ADACROP 
 codeforces 762E
 spoj COUNT1IT 
 spoj IITWPC4D 
