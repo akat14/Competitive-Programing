@@ -9,6 +9,8 @@ bool cmp(pair<int,int>a,pair<int,int>b)
 }
 int main()
 {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
 	int n,t,m,k,i,j,x,y,ci,cj;
 	char c;
 	cin>>n>>t>>m;
