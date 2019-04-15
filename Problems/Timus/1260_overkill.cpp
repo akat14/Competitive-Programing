@@ -12,8 +12,8 @@ struct mat
 		mat b;
 		int n=6,i,j,k;
 		for(i=0;i<n;i++)
-			for(j=0;j<n;j++)
-				for(k=0;k<n;k++)
+			for(k=0;k<n;k++)
+				for(j=0;j<n;j++)
 					b.x[i][j]+=x[i][k]*a.x[k][j];
 		return b;
 	}
