@@ -5,21 +5,17 @@ while [ $test -le $brtest ] ;
 do
 	if [ $test -lt 10 ] ;
 	then
-		time ./$name < $name.0$test.in > out
+		cp $name.0$test.in inn
 		cp $name.0$test.sol sol
 	else
-		time ./$name < $name.$test.in > out
+		cp $name.$test.in inn
 		cp $name.$test.sol sol
 	fi
+	time ./$name < inn > out
 	if [ "$(diff out sol -b)" != "" ] ;
 	then
 		echo 'WA on test '$test':'
-		if [ $test -lt 10 ] ;
-		then
-			cat $name.0$test.in
-		else
-			cat $name.$test.in
-		fi
+		echo inn
 		echo 'Expected: '
 		cat sol
 		echo 'Received: '
