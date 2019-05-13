@@ -16,9 +16,6 @@ struct MAXFLOW
 	void init()
 	{
 		p=0;
-		memset(to,0,sizeof(to));
-		memset(cap,0,sizeof(cap));
-		memset(prev,0,sizeof(prev));
 		memset(clast,-1,sizeof(clast));
 		memset(last,-1,sizeof(last));
 	}
