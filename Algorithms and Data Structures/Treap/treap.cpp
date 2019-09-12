@@ -128,14 +128,16 @@ struct Treap
 		merge(L,L,MID);
 		merge(node,L,R);
 	}
-	void erase(int x)//erases all elements = to x from the treap
+	void erase(int x)//erases an element = to x from the treap
 	{
 		Node *L,*MID,*R;
 		split(node,L,R,x);
 		split(L,L,MID,x-1);
+		MID->br--;
+		if(MID->br!=0)merge(L,L,MID);
 		merge(node,L,R);
 	}
-	int query(int x)//answer the qurty how many numbers <=x are in the trap
+	int query(int x)//answer the query how many numbers <=x are in the trap
 	{
 		Node *L,*R;
 		split(node,L,R,x);
