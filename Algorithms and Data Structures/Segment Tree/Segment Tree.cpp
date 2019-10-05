@@ -1,5 +1,6 @@
-#include<bits/stdc++.h>
-using namespace std;
+//Segment Tree
+//!!! UPDATES ONLY LEAVES
+//modify only conquer
 template<class T>
 struct SegmentTree
 {
@@ -12,7 +13,6 @@ struct SegmentTree
 	}
 	T conquer(const T &x,const T y)
 	{
-		return min(x,y);
 	}
 	void up(int x,int l,int r,const int &I,const int &U)
 	{
@@ -53,22 +53,3 @@ struct SegmentTree
 		return get(1,0,n-1,l,r);
 	}
 };
-int main()
-{
-     ios_base::sync_with_stdio(0);
-     cin.tie(0);
-	 int n,i,m,l,r,a;
-	 cin>>n;
-	 SegmentTree<int>T(n);
-	 for(i=0;i<n;i++)
-	 {
-		 cin>>a;
-		 T.update(i,a);
-	 }
-	 cin>>m;
-	 for(i=0;i<m;i++)
-	 {
-		 cin>>l>>r;
-		 cout<<T.query(l,r)<<'\n';
-	 }
-}
