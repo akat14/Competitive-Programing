@@ -62,8 +62,6 @@ void update(int a,int b,int c)
 }
 void solve()
 {
-	ios_base::sync_with_stdio(0);
-	cin.tie(0);
 	int n,i,c;
 	cin>>n;
 	vector<int>a(n-1),b(n-1);
