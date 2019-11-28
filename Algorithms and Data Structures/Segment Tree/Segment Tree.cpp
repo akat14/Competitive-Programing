@@ -1,55 +1,88 @@
-//Segment Tree
-//!!! UPDATES ONLY LEAVES
-//modify only conquer
-template<class T>
+#include<bits/stdc++.h>
+using namespace std;
+template<class T,class P>
 struct SegmentTree
 {
 	int n;
 	vector<T>it;
+	vector<bool>lazy;
+	vector<P>u;
 	SegmentTree(int nn)
 	{
 		n=nn;
 		it.resize(4*n);
+		lazy.resize(4*n);
+		u.resize(4*n);
 	}
-	T conquer(const T &x,const T y)
+	T combine(const T &l,const T &r)
 	{
+		T ans;
+		/*
+		 * do stuff here
+		 * ans=;
+		*/
+		return ans;
 	}
-	void up(int x,int l,int r,const int &I,const int &U)
+	void push(int x,int l,int r)
 	{
-		if(l==r)
+		if(lazy[x]==0)return;
+		if(x*2<4*n)
 		{
-			it[x]=U;
+			lazy[x*2]=lazy[x];
+			lazy[x*2+1]=lazy[x];
+			/*
+			 * do stuff here
+			 * u[x*2]=;
+			 * u[x*2+1]=;
+			 */
+		}
+		/*
+		 * do stuff here
+		 * it[x]=;
+		*/
+		lazy[x]=0;
+	}
+	void up(int x,int l,int r,const int &L,const int &R,const P &U)
+	{
+		push(x,l,r);
+		if(L<=l && r<=R)
+		{
+			lazy[x]=1;
+			u[x]=U;
 			return;
 		}
-		if(I>(l+r)/2)up(x*2+1,(l+r)/2+1,r,I,U);
-		else up(x*2,l,(l+r)/2,I,U);
-		it[x]=conquer(it[x*2],it[x*2+1]);
+		if(L<=(l+r)/2)up(x*2,l,(l+r)/2,L,R,U);
+		if(R>(l+r)/2)up(x*2+1,(l+r)/2+1,r,L,R,U);
+		push(x*2,l,(l+r)/2);
+		push(x*2+1,(l+r)/2+1,r);
+		it[x]=combine(it[x*2],it[x*2+1]);
 	}
-	void update(int i,int u)
+	void update(int l,int r,P u)
 	{
-		up(1,0,n-1,i,u);
+		up(1,0,n-1,l,r,u);
 	}
-	T get(int x,int l,int r,const int &L,const int &R)
+	T qu(int x,int l,int r,int L,int R)
 	{
+		push(x,l,r);
 		if(L<=l && r<=R)return it[x];
-		int f=0;
 		T ansl,ansr;
+		int f=0;
 		if(L<=(l+r)/2)
 		{
 			f|=1;
-			ansl=get(x*2,l,(l+r)/2,L,R);
+			ansl=qu(x*2,l,(l+r)/2,L,R);
 		}
 		if(R>(l+r)/2)
 		{
 			f|=2;
-			ansr=get(x*2+1,(l+r)/2+1,r,L,R);
+			ansr=qu(x*2+1,(l+r)/2+1,r,L,R);
 		}
 		if(f==1)return ansl;
 		if(f==2)return ansr;
-		return conquer(ansl,ansr);
+		return combine(ansl,ansr);
 	}
 	T query(int l,int r)
 	{
-		return get(1,0,n-1,l,r);
+		return qu(1,0,n-1,l,r);
 	}
 };
