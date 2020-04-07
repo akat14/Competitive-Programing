@@ -30,12 +30,6 @@ struct Treap
 				sz+=r->sz;
 			}
 		}
-		void output()//Outputs the keys in the treap in ascending order
-		{
-			if(l)l->output();
-			cout<<key<<endl;
-			if(r)r->output();
-		}
 	};
 	Node *node;
 	Treap()
@@ -58,27 +52,6 @@ struct Treap
 		{
 			R=T;
 			split(T->l,L,R->l,key);
-		}
-		T->con();
-	}
-	void split_sz(Node *T,Node *&L,Node *&R,int x)//splits T into L and R where L contains the first x elemets ot T and R has everything else
-	{
-		if(!T)
-		{
-			L=R=NULL;
-			return;
-		}
-		int size=1;
-		if(T->l)size+=T->l->sz;
-		if(size <= x)
-		{
-			L=T;
-			split_sz(T->r,L->r,R,x-size);
-		}
-		else
-		{
-			R=T;
-			split_sz(T->l,L,R->l,x);
 		}
 		T->con();
 	}
@@ -120,12 +93,6 @@ struct Treap
 		merge(L,L,MID);
 		merge(node,L,R);
 	}
-	void insert_b(int key)
-	{
-		Node *X;
-		X=new Node(key);
-		merge(node,node,X);
-	}
 	void erase(int x)//erases all elements = to x from the treap
 	{
 		Node *L,*MID,*R;
@@ -142,37 +109,27 @@ struct Treap
 		merge(node,L,R);
 		return ans;
 	}
-	int replace(int x,int y)
-	{
-		Node *L,*MID,*R;
-		split_sz(node,L,R,x);
-		split_sz(L,L,MID,x-1);
-		int ans=MID->key;
-		MID->key=y;
-		merge(L,L,MID);
-		merge(node,L,R);
-		return ans;
-	}
 };
 map<int,Treap>m;
+const int N=2e5+1;
 int main()
 {
 	ios_base::sync_with_stdio(0);
 	cin.tie(0);
 	Treap T;
-	int n,q,i,a;
+	int n,q,i,a,po[N];
 	cin>>n>>q;
 	for(i=0;i<n;i++)
 	{
-		cin>>a;
-		T.insert_b(a);
-		m[a].insert(i);
+		cin>>po[i];
+		m[po[i]].insert(i);
 	}
 	int b,c;
 	for(i=0;i<q;i++)
 	{
 		cin>>a>>b;
-		c=T.replace(a+1,b);
+		c=po[a];
+		po[a]=b;
 		m[c].erase(a);
 		m[b].insert(a);
 		cout<<m[b].query(a-1)<<'\n';
