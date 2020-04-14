@@ -256,26 +256,3 @@ struct DynamicConnectivityForrest
 		return rootu == rootv;
 	}
 };
-int main()
-{
-	ios_base::sync_with_stdio(0);
-	cin.tie(0);
-	int n,i,a,b,q;
-	string s;
-	cin>>n>>q;
-	DynamicConnectivityForrest F(n);
-	for(i = 0; i < q; i++)
-	{
-		cin>>s>>a>>b;
-		a--;
-		b--;
-		if(a == b)continue;
-		if(s[0] == 'c')
-		{
-			if(F.is_connected(a,b)) cout<<"YES\n";
-			else cout<<"NO\n";
-		}
-		else if(s[0] == 'a') F.add_edge(a,b);
-		else F.remove_edge(a,b);
-	}
-}
