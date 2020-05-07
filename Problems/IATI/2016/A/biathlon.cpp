@@ -39,7 +39,7 @@ int main()
 	{
 		if(c[i].a==c[i-1].a)continue;
 		env[++r]=i;
-		while(r>1 && cross(env[r-2],env[r])<=cross(env[r-2],env[r-1]))
+		while(r>1 && cross(env[r-2],env[r])-eps<cross(env[r-2],env[r-1]))
 			env[--r]=i;
 	}
 	for(i=0;i<r;i++)
