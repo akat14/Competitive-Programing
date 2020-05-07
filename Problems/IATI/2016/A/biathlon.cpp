@@ -28,7 +28,7 @@ int main()
 	int n,i,o=0;
 	cin>>n;
 	for(i=0;i<n;i++)
-    {
+	{
 		cin>>c[i].a>>c[i].b;
 		c[i].i=i;
 	}
@@ -45,30 +45,29 @@ int main()
 	for(i=0;i<r;i++)
 	{
 		if(cross(env[i],env[i+1])>eps && !(c[env[i]].a==c[env[i]+1].a && c[env[i]].b==c[env[i]+1].b))
-        {
+		{
 			l[c[env[i]].i]=1;
 			o++;
-        }
+		}
 	}
-    if(!(c[env[i]].a==c[env[i]+1].a && c[env[i]].b==c[env[i]+1].b))
-    {
+	if(!(c[env[i]].a==c[env[i]+1].a && c[env[i]].b==c[env[i]+1].b))
+	{
 		l[c[env[i]].i]=1;
 		o++;
-    }
-    if(o==0)
-    {
+	}
+	if(o==0)
+	{
 		cout<<-1<<endl;
 		return 0;
-    }
-    int f=0;
-    for(i=0;i<n;i++)
-    {
+	}
+	int f=0;
+	for(i=0;i<n;i++)
+	{
 		if(l[i] && f)cout<<' ';
 		if(l[i])
 		{
 			f=1;
 			cout<<i;
-		
 		}
 	}
 	cout<<endl;
