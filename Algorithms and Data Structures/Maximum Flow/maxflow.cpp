@@ -1,42 +1,33 @@
-#include<bits/stdc++.h>
-using namespace std;
-const int FLOWMAXN=;//maximum number of vertixes
-const int FLOWMAXM=;//maximum numver of edges
-const int FLOWINF=;//maximum value of the flow
 template<class T>
-struct MAXFLOW 
+struct MaxFlow 
 {
-	int to[FLOWMAXM*2];
-	T cap[FLOWMAXM*2];
-	int prev[FLOWMAXM*2];
-	int clast[FLOWMAXN];
-	int last[FLOWMAXN];
-	int level[FLOWMAXN];
-	int p;
-	void init()
-	{
-		p=0;
-		memset(clast,-1,sizeof(clast));
-		memset(last,-1,sizeof(last));
-	}
-	MAXFLOW()
-	{
-		init();
-	}
-	void add_edge(int a,int b,int c)
-	{
-		to[p]=b;
-		cap[p]=c;
-		prev[p]=last[a];
-		last[a]=clast[a]=p++;
-	}
+	vector<T>cap;
+	vector<int>to,prev,clast,last,level;
 	int s,t;
-	queue<int>q;
+	T INF;
+	MaxFlow(int ss,int tt,int n)
+	{
+		s = ss;
+		t = tt;
+		INF = 0;
+		clast = last = level = vector<int>(n+1,-1);
+	}
+	void add_edge(int a,int b,T c)
+	{
+		to.emplace_back(b);
+		cap.emplace_back(c);
+		prev.emplace_back(last[a]);
+		clast[a] = last[a] = to.size() - 1;
+		INF = max(INF, c);
+	}
 	bool bfs()
 	{
+		static int cnt = 0;
+		cnt++;
 		int i,x;
-		memset(level,0,sizeof(level));
+		fill(level.begin(), level.end(), 0);
 		level[t]=1;
+		queue<int>q;
 		q.push(t);
 		while(q.size())
 		{
@@ -71,17 +62,51 @@ struct MAXFLOW
 		}
 		return 0;
 	}
-	T maxflow(int ss,int tt)
+	T maxflow()
 	{
-		s=ss;
-		t=tt;
 		T ans=0,cans;
 		while(bfs())
 		{
-			while((cans=dfs(s,FLOWINF)))
+			while((cans=dfs(s,INF)))
 				ans+=cans;
-			memcpy(clast,last,p*sizeof(int));
+			clast = last;
 		}
+		return ans;
+	}
+	vector<int> min_vertex_cover()
+	{
+		vector<int>type(last.size(),2);
+		int i, x;
+		queue<int>q;
+		for(i = last[s]; i > -1; i = prev[i])
+		{
+			type[to[i]] = 0;
+			if(cap[i] == 0) type[to[i]] = 3;
+			else q.push(to[i]);
+		}
+		type[s] = type[t] = 0;
+		while(q.size())
+		{
+			x = q.front();
+			q.pop();
+			for(i = last[x]; i > -1; i = prev[i])
+				if(type[to[i]] > 1)
+				{
+					if(type[to[i]] == 2)
+					{
+						type[to[i]] = 1;
+						q.push(to[i]);
+					}
+					else if(cap[i] == 1)
+					{
+						type[to[i]] = 0;
+						q.push(to[i]);
+					}
+				}
+		}
+		vector<int>ans;
+		for( i = 0; i < (int)last.size(); i++)
+			if(type[i] % 2 == 1) ans.emplace_back(i);
 		return ans;
 	}
 };
