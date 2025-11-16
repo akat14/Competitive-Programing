@@ -13,7 +13,32 @@ void print(vector<T> &v)
     cout << x << ' ';
   cout << '\n';
 }
-const long long MOD = 998244353;
+struct MOD
+{
+  const static long long mod = 998244353;
+  long long value;
+  MOD(long long v) { value = v; }
+  MOD() { value = 0; }
+  MOD operator+(const MOD &x)
+  {
+    long long curr = value + x.value;
+    if(curr >= mod) curr -= mod;
+    return MOD(curr);
+  }
+  MOD operator+=(const MOD &x)
+  {
+    value += x.value;
+    if(value >= mod) value -= mod;
+    return *this;
+  }
+  MOD operator-(const MOD &x)
+  {
+    long long curr = value - x.value;
+    if(curr < 0) curr += mod;
+    return curr;
+  }
+  MOD operator*(const MOD &x) { return MOD((value * x.value) % mod); }
+};
 void solve()
 {
   long long n;
@@ -34,8 +59,8 @@ void solve()
   }
   p.push_back({curr, v.back()});
   sort(p.begin(), p.end());
-  vector<vector<long long>> dp(n + 1, vector<long long>(n + 1, 0));
-  dp[0][0] = 1;
+  vector<vector<MOD>> dp(n + 1, vector<MOD>(n + 1));
+  dp[0][0] = MOD(1);
   long long i = 1, j, count;
   for(i = 1; i <= p.size(); i++)
   {
@@ -45,41 +70,30 @@ void solve()
     for(j = 0; j < count; j++)
       dp[i][j] = dp[i - 1][j];
     for(j = count; j <= n; j++)
-      dp[i][j] = (dp[i - 1][j] + dp[i - 1][j - count] * count) % MOD;
+      dp[i][j] = dp[i - 1][j] + dp[i - 1][j - count] * count;
     for(j = j - count + 1; j <= n; j++)
-      dp[i][n] = (dp[i][n] + dp[i][j] * count) % MOD;
+      dp[i][n] = dp[i][n] + dp[i][j] * count;
   }
-  long long ans = 0, oi = i;
+  MOD ans = 0;
+  int oi = i;
   for(j = p.back().first; j <= n; j++)
-  {
     ans += dp[i - 1][j];
-    if(ans >= MOD) ans -= MOD;
-  }
   for(; i <= p.size(); i++)
   {
     dp[i][0] = 1;
     for(j = count; j <= n; j++)
-      dp[i][j] = (dp[oi - 1][j - count] * count) % MOD;
+      dp[i][j] = dp[oi - 1][j - count] * count;
     for(j = j - count + 1; j <= n; j++)
-    {
       dp[i][n] += dp[oi - 1][j];
-      if(dp[i][n] >= MOD) dp[i][n] -= MOD;
-    }
     if(i == oi) continue;
     for(j = count + 1; j <= n; j++)
-      dp[i][j] = (dp[i][j] + dp[i - 1][j - count] * count) % MOD;
+      dp[i][j] = dp[i][j] + dp[i - 1][j - count] * count;
     for(j = 1; j <= n; j++)
-    {
       dp[i][j] += dp[i - 1][j];
-      if(dp[i][j] >= MOD) dp[i][j] -= MOD;
-    }
   }
   for(j = 1; j <= n; j++)
-  {
     ans += dp[i - 1][j];
-    if(ans >= MOD) ans -= MOD;
-  }
-  cout << ans << '\n';
+  cout << ans.value << '\n';
 }
 int main()
 {
