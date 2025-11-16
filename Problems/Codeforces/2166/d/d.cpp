@@ -23,7 +23,7 @@ struct MOD
   {
     long long curr = value + x.value;
     if(curr >= mod) curr -= mod;
-    return MOD(curr);
+    return curr;
   }
   MOD operator+=(const MOD &x)
   {
@@ -37,7 +37,7 @@ struct MOD
     if(curr < 0) curr += mod;
     return curr;
   }
-  MOD operator*(const MOD &x) { return MOD((value * x.value) % mod); }
+  MOD operator*(const MOD &x) { return (value * x.value) % mod; }
 };
 void solve()
 {
