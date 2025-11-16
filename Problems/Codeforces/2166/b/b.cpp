@@ -15,7 +15,16 @@ void print(vector<T> &v)
 }
 void solve()
 {
-
+  long long a, b, n;
+  cin >> a >> b >> n;
+  if(a == b)
+  {
+    cout << "1\n";
+    return;
+  }
+  int ans = 1;
+  if(a / n < b) ans++;
+  cout << ans << '\n';
 }
 int main()
 {
